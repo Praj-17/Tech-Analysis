@@ -48,6 +48,7 @@ class YahooDataCollector(yf.Ticker):
         except Exception as e:
             print(f"Error fetching historical prices for {self.stock_name}: {e}")
             return None
+        
     def plot_stock_prices(self, stock_symbol = None, interval='1d'):
         if not stock_symbol:
             stock_symbol = self.stock_name
@@ -60,7 +61,9 @@ class YahooDataCollector(yf.Ticker):
         except Exception as e:
             print(f"Error fetching historical prices for {stock_symbol}: {e}")
             return
-
+        self.plot_given_df(stock_data)
+        
+    def plot_given_df(self, stock_data):
         # Create traces for Candlestick chart
         trace = go.Candlestick(x=stock_data.index,
                             open=stock_data['Open'],
@@ -68,7 +71,7 @@ class YahooDataCollector(yf.Ticker):
                             low=stock_data['Low'],
                             close=stock_data['Close'])
 
-        layout = go.Layout(title=f"{stock_symbol} Historical Prices",
+        layout = go.Layout(title=f"Historical Prices",
                         xaxis=dict(title='Date'),
                         yaxis=dict(title='Price'))
 
